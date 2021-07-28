@@ -1,0 +1,27 @@
+{
+  "name": "myretail",
+  "version": "1.0.0",
+  "description": "API to search products and set prices.",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/adunahee/myRetail.git"
+  },
+  "author": "Anthony Dunahee",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/adunahee/myRetail/issues"
+  },
+  "homepage": "https://github.com/adunahee/myRetail#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongoose": "^5.13.3"
+  },
+  "devDependencies": {
+    "jest": "^27.0.6"
+  }
+}
