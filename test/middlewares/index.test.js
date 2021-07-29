@@ -24,6 +24,10 @@ describe("test suite for errorHandler middleware", () => {
     expect(res.status.mock.calls[0][0]).toBe(STATUS_CODE);
     expect(res.send.mock.calls[0][0]).toBe(ERR_MSG);
   });
+  test("sends appropriate info about error", () => {
+    const { err, req, res, next } = prepareMocks();
+    errorHandler(null, req, res, next);
+  });
 });
 
 const prepareMocks = () => {
