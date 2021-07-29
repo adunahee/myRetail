@@ -1,6 +1,9 @@
+const GENERIC_MSG = "An unexpected error occurred.";
+
 function errorHandler(err, req, res, next) {
-  // TODO: handle different error scenarios
-  res.status(err.status).send(err.message);
+  return res
+    .status(err.status ? err.status : 500)
+    .send(err.message ? err.message : GENERIC_MSG);
 }
 
-module.exports = { errorHandler };
+module.exports = { errorHandler, GENERIC_MSG };
