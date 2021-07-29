@@ -1,7 +1,8 @@
-const { readProduct } = require("../services");
+const { fetchProduct } = require("../services");
+const { readProductPrice } = require("../dao");
 
 const productController = {
-  getProductById: [validateGetById, fetchProductById],
+  getProductById: [validateGetById, fetchProductById, readProductPriceById],
   updatePrice: [],
 };
 
@@ -18,10 +19,23 @@ function validateGetById(req, res, next) {
 
 async function fetchProductById(req, res, next) {
   try {
-    const productInfo = await readProduct(req.params.validatedId);
-    res.send(productInfo);
+    req.productInfo = await fetchProduct(req.params.validatedId);
+    next();
   } catch (e) {
     next(e);
+  }
+}
+
+async function readProductPriceById(req, res, next) {
+  try {
+    if (!req || !req.productInfo) {
+      throw new Error("productInfo not present on request");
+    }
+    const priceDetails = await readProductPrice(req.productInfo.item.tcin);
+    const productWithPriceInfo = Object.assign(req.productInfo, priceDetails);
+    res.send(productWithPriceInfo);
+  } catch (error) {
+    next(error);
   }
 }
 

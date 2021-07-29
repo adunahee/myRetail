@@ -1,0 +1,6 @@
+{
+  "_id": { "$oid": "61021b8816624c9ba6f7ecc0" },
+  "price": 9.99,
+  "product_id": "13860428",
+  "currency_code": "USD"
+}
