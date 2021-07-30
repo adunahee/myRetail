@@ -6,7 +6,7 @@ const priceSchema = {
   properties: {
     price: { type: "number" },
     currency_code: { type: "string" },
-    product_id: { type: "integer" },
+    product_id: { type: "string" },
   },
   required: ["price", "currency_code", "product_id"],
   additionalProperties: false,

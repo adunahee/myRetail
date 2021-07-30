@@ -3,7 +3,7 @@ Is a RESTful service that can retrieve product and price details by ID. And set 
 - GET http://localhost:3000/api/products/13860428
 - PUT http://localhost:3000/api/products/13860428
 
-The GET response is also the same JSON expected for PUT when updating price. See sampleData.json for more details.
+The GET response is also the same JSON expected for PUT when updating price. See samplePriceData.json for more details.
 
 ## Local Setup
 1. Fork and clone this repository.
