@@ -1,5 +1,6 @@
 const { fetchProduct } = require("../services");
 const { readProductPrice, upsertPrice } = require("../dao");
+const { validatePriceJSON } = require("../util");
 
 const productController = {
   getProductById: [validateGetById, getProductAndPrice],
@@ -19,7 +20,18 @@ function validateGetById(req, res, next) {
 }
 
 function validatePrice(req, res, next) {
-  next();
+  const { price } = req.body;
+  try {
+    let errors = validatePriceJSON(price);
+    if (errors) {
+      res.status(400).send(errors);
+    } else {
+      next();
+    }
+  } catch (e) {
+    console.log("An unexpected error occurred while validating price.");
+    next(e);
+  }
 }
 
 async function getProductAndPrice(req, res, next) {
@@ -40,7 +52,14 @@ async function getProductAndPrice(req, res, next) {
 }
 
 async function updatePrice(req, res, next) {
-  // const {}
+  const { price } = req.body;
+  const { product_id } = price;
+  try {
+    const updatedPrice = await upsertPrice(price);
+    res.send(updatedPrice);
+  } catch (e) {
+    next(e);
+  }
 }
 
 module.exports = { productController };

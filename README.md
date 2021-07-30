@@ -19,7 +19,7 @@ TODO mongo
 npm install 
 npm run start
 ```
-
+6. Run npm run test 
 ## Considerations
 Before deploying address the following.
 1. Restrict access to price setting endpoint. 
