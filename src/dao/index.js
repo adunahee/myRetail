@@ -7,6 +7,8 @@ const DB_NAME = "myRetail";
 const MODEL_NAME = "price";
 const PRICING_COLLECTION = "prices";
 
+const PROJECT_STAGE = { _id: 0, __v: 0 };
+
 const setupDb = async () => {
   try {
     await mongoose.connect(
@@ -25,6 +27,12 @@ const setupDb = async () => {
 };
 setupDb();
 
+function mongoErrorHandler(err, priceDoc) {
+  if (err) {
+    throw err;
+  }
+}
+
 const priceSchema = new mongoose.Schema({
   product_id: String,
   price: { type: Number, default: 9.99 },
@@ -32,22 +40,29 @@ const priceSchema = new mongoose.Schema({
 });
 const Price = mongoose.model(MODEL_NAME, priceSchema);
 
-const readProductPrice = async (productId) => {
-  let price;
+async function readProductPrice(productId) {
   const query = {
     product_id: productId,
   };
-
-  await Price.findOne(query, (err, priceDoc) => {
-    if (err) {
-      throw err;
-    }
-    price = priceDoc.toJSON();
-    delete price._id;
-  });
+  const price = await Price.findOne(query, PROJECT_STAGE, mongoErrorHandler);
   return price;
-};
+}
 
-function updateProductPrice(product) {}
+async function upsertPrice(updatedPrice) {
+  const filter = { product_id: updatedPrice.product_id };
+  const options = {
+    new: true,
+    upsert: true,
+    setDefaultsOnInsert: true,
+    projection: PROJECT_STAGE,
+  };
+  let priceDoc = await Price.findOneAndUpdate(
+    filter,
+    updatedPrice,
+    options,
+    mongoErrorHandler
+  );
+  return priceDoc;
+}
 
-module.exports = { readProductPrice, updateProductPrice };
+module.exports = { readProductPrice, upsertPrice };
